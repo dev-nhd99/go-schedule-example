@@ -85,3 +85,5 @@ deploy-dev:
 	helm install $(APP_NAME) deployment --set ENV=app \
 	--set image.repository=$(DOCKER_REPO)/$(APP_NAME) \
 	--set fullnameOverride=$(APP_NAME)
+undeloy-dev:
+	helm uninstall $(APP_NAME)
