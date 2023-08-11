@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"runtime"
 	"strconv"
 	"time"
@@ -10,14 +11,24 @@ import (
 
 	"net/http"
 
+	redislock "github.com/go-co-op/gocron-redis-lock"
 	"github.com/labstack/echo/v4"
+	"github.com/redis/go-redis/v9"
 )
 
 
 
 func main() {
-	
+	redisOptions := &redis.Options{
+		Addr: "192.168.0.254:31000",
+	}
+	redisClient := redis.NewClient(redisOptions)
+	locker, err := redislock.NewRedisLocker(redisClient, redislock.WithTries(1))
+	if err != nil {
+		fmt.Println("Err >>>", err)
+	}
 	s := gocron.NewScheduler(time.UTC)
+	s.WithDistributedLocker(locker)
 	s.StartAsync()
 
 	//api
