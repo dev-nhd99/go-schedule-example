@@ -2,6 +2,7 @@ package main
 
 import (
 	"runtime"
+	"strconv"
 	"time"
 
 	"github.com/go-co-op/gocron"
@@ -22,8 +23,10 @@ func main() {
 	//api
 	e := echo.New()
    
-	e.GET("/create", func(c echo.Context) error {
-		err := helper.CreateSchedule(s)
+	e.GET("/create/:num", func(c echo.Context) error {
+		num := c.Param("num")
+		jobs, _ := strconv.Atoi(num)
+		err := helper.CreateSchedule(s, jobs)
 		if err != nil {
 			return c.String(http.StatusInternalServerError, "Create failed")
 		}
