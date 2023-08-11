@@ -1,5 +1,7 @@
 replicaCount: 1
 
+namespace: lambda
+
 image:
   repository: localhost:5000/go-schedule-example 
   tag: latest
